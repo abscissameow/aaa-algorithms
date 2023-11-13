@@ -7,20 +7,33 @@ def max_div3_sum(nums: list) -> int:
     if remainder == 0:
         return total
 
-    nums_1 = sorted(x for x in nums if x % 3 == 1)
-    nums_2 = sorted(x for x in nums if x % 3 == 2)
+    rem1, rem2 = [float('inf')] * 2, [float('inf')] * 2
+    for num in nums:
+        if num % 3 == 1:
+            if num <= rem1[0]:
+                rem1[1] = rem1[0]
+                rem1[0] = num
+            elif num < rem1[1]:
+                rem1[1] = num
+        elif num % 3 == 2:
+            if num <= rem2[0]:
+                rem2[1] = rem2[0]
+                rem2[0] = num
+            elif num < rem2[1]:
+                rem2[1] = num
 
     if remainder == 1:
-        if len(nums_2) >= 2 and (not nums_1 or sum(nums_2[:2]) < nums_1[0]):
-            return total - sum(nums_2[:2])
+        if (rem1[0] == float('inf')) or (sum(rem2) < rem1[0]):
+            return total - sum(rem2)
         else:
-            return total - nums_1[0]
+            return total - rem1[0]
 
     elif remainder == 2:
-        if len(nums_1) >= 2 and (not nums_2 or sum(nums_1[:2]) < nums_2[0]):
-            return total - sum(nums_1[:2])
+        if (rem2[0] == float('inf')) or (sum(rem1) < rem2[0]):
+            return total - sum(rem1)
         else:
-            return total - nums_2[0]
+            return total - rem2[0]
+
 
 def solution():
     """
@@ -29,5 +42,6 @@ def solution():
     numbers = [int(x) for x in input().split()]
     result = max_div3_sum(numbers)
     print(result)
+
 
 solution()
