@@ -4,10 +4,15 @@ import heapq
 def get_kth_element(arr: list, k: int):
     """
     отдаёт k-ый наименьший элемент в списке arr
-    читерски использует кучи!!
+    уже не так читерски использует кучи
     """
-    heapq.heapify(arr)
-    return heapq.nsmallest(k+1, arr)[-1]
+    kheap = []
+    for i, elem in enumerate(arr):
+        if i < k:
+            heapq.heappush(kheap, elem)
+        else:
+            heapq.heappushpop(kheap, elem)
+    return heapq.heappop(kheap)
 
 
 def solution():
